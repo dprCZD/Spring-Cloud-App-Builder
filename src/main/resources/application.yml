@@ -1,0 +1,43 @@
+spring:
+  application:
+    #  必须和gitlab上配置文件的name一样，如gitlab上的配置文件为configclient-dev.yml
+    name: builder
+  servlet:
+    multipart:
+      max-file-size: 104857600
+      max-request-size: 209715200
+      enabled: true
+      file-size-threshold: 0
+  datasource:
+    driverClassName: "com.mysql.jdbc.Driver"
+    url: "jdbc:mysql://localhost:3306/app_builder?useUnicode=true&characterEncoding=utf-8"
+    username: "root"
+    password: "admin"
+
+server:
+  port: 8889
+
+mybatis:
+  config-location: [
+    "classpath*:mybatis/mybatis-config.xml"
+  ]
+  type-aliases-package: io.transwarp.tdc.springcloud.appbuilder.persistence.model,io.transwarp.tdc.springcloud.appbuilder.persistence.handler
+  type-handlers-package: io.transwarp.tdc.springcloud.appbuilder.persistence.handler
+
+  mapper-locations: [
+    "classpath*:mybatis/mapper/*.xml"
+  ]
+docker:
+  host: "unix:///var/run/docker.sock"
+  registryUrl: "https://172.16.1.99/tdctest/"
+  registryUsername: "czd"
+  registryPassword: "CHANGlast0803"
+
+
+registry:
+  location: "172.16.1.99/tdctest/"
+
+Resources:
+  baseDir: "/home/zhendongchang/mygit/spring-cloud-app-builder/src/main/resources/DockerSource/"
+  App:
+    name: "spring-cloud-app.jar"

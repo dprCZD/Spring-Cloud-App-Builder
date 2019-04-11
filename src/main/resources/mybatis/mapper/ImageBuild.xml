@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="io.transwarp.tdc.springcloud.appbuilder.persistence.mapper.ImageBuildMapper">
+
+    <select id="getImageBuild" parameterType="String"
+            resultMap="ImageBuildMap">
+        select * from image_build
+        where build_id = #{buildId};
+    </select>
+
+    <select id="listImageBuilds" resultMap="ImageBuildMap">
+        select * from image_build;
+    </select>
+
+    <insert id="insertImageBuild" parameterType="ImageBuild" useGeneratedKeys="true" keyProperty="imageBuild.id">
+        insert into image_build (
+        build_id,
+        image_name,
+        tenant_name,
+        status,
+        create_time,
+        create_user,
+        update_time,
+        update_user
+        ) values (
+        #{imageBuild.buildId},
+        #{imageBuild.imageName},
+        #{imageBuild.tenantName},
+        #{imageBuild.status},
+        #{imageBuild.createTime,typeHandler=TimestampLongHandler},
+        #{imageBuild.createUser},
+        #{imageBuild.updateTime,typeHandler=TimestampLongHandler},
+        #{imageBuild.updateUser}
+        )
+    </insert>
+
+    <update id="updateImageBuild" parameterType="ImageBuild" >
+        update image_build
+        set
+        image_name=#{imageBuild.imageName},
+        tenant_name=#{imageBuild.tenantName},
+        status=#{imageBuild.status},
+        create_time=#{imageBuild.createTime,typeHandler=TimestampLongHandler},
+        create_user=#{imageBuild.createUser},
+        update_time=#{imageBuild.updateTime,typeHandler=TimestampLongHandler},
+        update_user=#{imageBuild.updateUser}
+        where build_id=#{buildId}
+    </update>
+
+    <update id="updateImageBuildStatus"  >
+        update image_build
+        set
+        status=#{status}
+        where build_id=#{buildId}
+    </update>
+
+    <delete id="deleteImageBuild">
+        delete from image_build
+        where build_id=#{buildId}
+    </delete>
+
+    <resultMap id="ImageBuildMap" type="ImageBuild">
+        <id property="id" column="id"/>
+        <result property="buildId" column="build_id"/>
+        <result property="status" column="status"/>
+        <result property="tenantName" column="tenant_name"/>
+        <result property="imageName" column="image_name"/>
+        <result property="createTime" column="create_time" typeHandler="TimestampLongHandler"/>
+        <result property="createUser" column="create_user"/>
+        <result property="updateTime" column="update_time" typeHandler="TimestampLongHandler"/>
+        <result property="updateUser" column="update_user" />
+    </resultMap>
+</mapper>
